@@ -125,7 +125,7 @@ class SimuladorTuring:
         resultado = self.cinta.count('1')
         
         print(f"\nResultado: {resultado}")
-        print(f"Contenido final de la cinta: {''.join(self.cinta).replace('B', '□')}")
+        print(f"Contenido final de la cinta: {''.join(self.cinta).replace('B', 'B')}")
         
         return resultado
     

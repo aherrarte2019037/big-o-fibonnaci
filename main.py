@@ -63,7 +63,7 @@ class SimuladorFibonacci:
         print("Iniciando ejecución de la máquina de Turing para Fibonacci...")
         print("-" * 40)
         
-        while not terminado and self.contador_pasos < 1500:  # Límite de seguridad
+        while not terminado and self.contador_pasos < 3000:  # Límite de seguridad
             terminado = self.avanzar_paso()
         
         tiempo_ejecucion = time.time() - inicio
@@ -74,7 +74,7 @@ class SimuladorFibonacci:
         
         resultado = self.cinta.count('1')
         
-        cinta_final = "".join(self.cinta).replace("X", "□")
+        cinta_final = "".join(self.cinta).replace("X", "B")
         print(f"\nResultado: {resultado}")
         print(f"Cinta final: {cinta_final}")
         
@@ -176,7 +176,7 @@ def ejecutar_fibonacci():
     configuracion = cargar_configuracion(ARCHIVO_CONFIG)
     tabla_transiciones = configuracion["transiciones"]
     
-    print("\nIntroduce un número en notación unaria (secuencia de '1's):")
+    print("\nIntroduce un número en notación unaria:")
     entrada = input().strip()
     
     if not all(c == '1' for c in entrada):
