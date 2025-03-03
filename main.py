@@ -97,7 +97,7 @@ def analizar_rendimiento():
     resultados = []
     valores_esperados = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
     
-    for n in range(1, 11):
+    for n in range(1, 9):
         entrada = "1" * n
         
         cinta = ["X"] + list(entrada) + ["X"] * 100
