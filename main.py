@@ -176,8 +176,7 @@ def crear_graficas(resultados):
         ax2.legend()
     
     plt.tight_layout()
-    plt.savefig('rendimiento_fibonacci.png')
-    print("\nGráficas guardadas como 'rendimiento_fibonacci.png'")
+    plt.savefig('Rendimiento Fibonacci.png')
 
 def ejecutar_fibonacci():
     configuracion = cargar_configuracion(ARCHIVO_CONFIG)
