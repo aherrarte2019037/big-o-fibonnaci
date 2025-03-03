@@ -145,38 +145,58 @@ def crear_graficas(resultados):
     pasos = [r["pasos"] for r in resultados]
     tiempos = [r["tiempo"] for r in resultados]
     
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
     
-    ax1.plot(n_valores, tiempos, 'o-', color='blue')
-    ax1.set_title('Tiempo de ejecución vs n')
-    ax1.set_xlabel('n')
-    ax1.set_ylabel('Tiempo (segundos)')
-    ax1.grid(True)
-    
-    if len(n_valores) >= 3:
-        coef = np.polyfit(n_valores, tiempos, 2)
-        poly = np.poly1d(coef)
-        x_new = np.linspace(min(n_valores), max(n_valores), 100)
-        y_new = poly(x_new)
-        ax1.plot(x_new, y_new, 'r--', label=f'Ajuste: {poly}')
-        ax1.legend()
-    
-    ax2.plot(n_valores, pasos, 'o-', color='green')
-    ax2.set_title('Número de pasos vs n')
-    ax2.set_xlabel('n')
-    ax2.set_ylabel('Número de pasos')
-    ax2.grid(True)
+    # Gráfica 1: Tiempo vs n (ya incluye diagrama de dispersión y regresión)
+    ax1.plot(n_valores, tiempos, 'o-', color='blue', label='Datos reales')
+    ax1.set_title('Tiempo de ejecución vs n', fontsize=12)
+    ax1.set_xlabel('n', fontsize=10)
+    ax1.set_ylabel('Tiempo (segundos)', fontsize=10)
+    ax1.grid(True, linestyle='--', alpha=0.7)
     
     if len(n_valores) >= 3:
-        coef = np.polyfit(n_valores, pasos, 2)
-        poly = np.poly1d(coef)
+        coef_tiempo = np.polyfit(n_valores, tiempos, 2)
+        poly_tiempo = np.poly1d(coef_tiempo)
         x_new = np.linspace(min(n_valores), max(n_valores), 100)
-        y_new = poly(x_new)
-        ax2.plot(x_new, y_new, 'r--', label=f'Ajuste: {poly}')
-        ax2.legend()
+        y_pred = poly_tiempo(x_new)
+        
+        # Calcular R² para tiempo
+        y_real = np.array(tiempos)
+        y_predicted = poly_tiempo(n_valores)
+        ss_res = np.sum((y_real - y_predicted)**2)
+        ss_tot = np.sum((y_real - np.mean(y_real))**2)
+        r2_tiempo = 1 - (ss_res / ss_tot)
+        
+        ax1.plot(x_new, y_pred, 'r--', linewidth=2, 
+                label=f'Ajuste: {poly_tiempo}\n$R^2$ = {r2_tiempo:.4f}')
+        ax1.legend(loc='upper left', fontsize=8)
+
+    # Gráfica 2: Pasos vs n (ya incluye diagrama de dispersión y regresión)
+    ax2.plot(n_valores, pasos, 'o-', color='green', label='Datos reales')
+    ax2.set_title('Número de pasos vs n', fontsize=12)
+    ax2.set_xlabel('n', fontsize=10)
+    ax2.set_ylabel('Número de pasos', fontsize=10)
+    ax2.grid(True, linestyle='--', alpha=0.7)
     
+    if len(n_valores) >= 3:
+        coef_pasos = np.polyfit(n_valores, pasos, 2)
+        poly_pasos = np.poly1d(coef_pasos)
+        x_new = np.linspace(min(n_valores), max(n_valores), 100)
+        y_pred = poly_pasos(x_new)
+        
+        # Calcular R² para pasos
+        y_real = np.array(pasos)
+        y_predicted = poly_pasos(n_valores)
+        ss_res = np.sum((y_real - y_predicted)**2)
+        ss_tot = np.sum((y_real - np.mean(y_real))**2)
+        r2_pasos = 1 - (ss_res / ss_tot)
+        
+        ax2.plot(x_new, y_pred, 'r--', linewidth=2, 
+                label=f'Ajuste: {poly_pasos}\n$R^2$ = {r2_pasos:.4f}')
+        ax2.legend(loc='upper left', fontsize=8)
+
     plt.tight_layout()
-    plt.savefig('Rendimiento Fibonacci.png')
+    plt.savefig('Rendimiento Fibonacci.png', dpi=300)
 
 def ejecutar_fibonacci():
     configuracion = cargar_configuracion(ARCHIVO_CONFIG)
