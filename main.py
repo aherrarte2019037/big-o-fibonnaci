@@ -32,11 +32,18 @@ class SimuladorFibonacci:
         self.cinta[self.posicion] = nueva_transicion[1]
         self.posicion += nueva_transicion[2]
         
+        # Verificar si necesitamos expandir la cinta
+        if self.posicion >= len(self.cinta) - 2:
+            self.cinta.extend(["X"] * 20)
+        elif self.posicion <= 1:
+            self.cinta = ["X"] * 20 + self.cinta
+            self.posicion += 20
+        
         self.contador_pasos += 1
         
         self.mostrar_estado()
         
-        return self.estado_actual == "18"  # Estado de aceptación
+        return self.estado_actual == "18"
     
     def mostrar_estado(self):
         rango_visible = 20
@@ -63,7 +70,7 @@ class SimuladorFibonacci:
         print("Iniciando ejecución de la máquina de Turing para Fibonacci...")
         print("-" * 40)
         
-        while not terminado and self.contador_pasos < 3000:  # Límite de seguridad
+        while not terminado and self.contador_pasos < 30000:
             terminado = self.avanzar_paso()
         
         tiempo_ejecucion = time.time() - inicio
@@ -97,7 +104,7 @@ def analizar_rendimiento():
     resultados = []
     valores_esperados = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
     
-    for n in range(1, 9):
+    for n in range(1, 11):
         entrada = "1" * n
         
         cinta = ["X"] + list(entrada) + ["X"] * 100
